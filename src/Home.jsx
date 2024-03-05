@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useMutation, gql } from "@apollo/client";
 
 import axios from "axios";
 
@@ -8,6 +9,16 @@ function Home() {
     second: "",
   });
   const [progress, setProgress] = useState(0);
+  const CREATE_USER = gql`
+    mutation createUser($data: [UserInput]!) {
+      createUser(data: $data) {
+        data
+        status
+      }
+    }
+  `;
+  const [createUser] = useMutation(CREATE_USER);
+
   const [currentDate, setCurrentDate] = useState("");
   const cancelTokenSource = axios.CancelToken.source();
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +38,37 @@ function Home() {
       // return () => clearInterval(intervalData);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async function createUseronGraph() {
+    try {
+      setIsLoading(true);
+      for (let index = 0; index < formField.request || 1; index++) {
+        await createUser({
+          variables: {
+            data: {
+              one: "1",
+              two: "2",
+              three: "3",
+              four: "4",
+              five: "5",
+              six: "6",
+              seven: "7",
+              eight: "8",
+              nine: "9",
+            },
+          },
+        });
+      }
+
+      // const endTime = new Date();
+      // const elapsedTime = endTime - startTime;
+      // setCurrentDate(elapsedTime.toString());
+    } catch (error) {
+      console.log("Something went wrong ", error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -79,7 +121,7 @@ function Home() {
   }
 
   async function handleCancelToken() {
-    cancelTokenSource.cancel("Request is cancelled by user.");
+    // cancelTokenSource.cancel("Request is cancelled by user.");
   }
 
   function handleChange(e) {
@@ -124,17 +166,17 @@ function Home() {
         >
           <button
             disabled={formField.request ? false : true}
-            onClick={insertData}
+            onClick={createUseronGraph}
           >
             Test api
           </button>
 
-          <button
+          {/* <button
             disabled={!isLoading ? true : false}
             onClick={handleCancelToken}
           >
             Cancel
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

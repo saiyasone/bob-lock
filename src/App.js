@@ -4,7 +4,7 @@ import "./App.css";
 
 function App() {
   const httpClient = new ApolloClient({
-    uri: "http://192.168.0.105:4000/graphql",
+    uri: "https://sbms.vshare.net/graphql",
     cache: new InMemoryCache(),
   });
 
