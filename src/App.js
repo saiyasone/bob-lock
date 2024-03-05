@@ -1,23 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import "./App.css";
+import axios from "axios";
 
 function App() {
+  async function handleApi() {
+    const intervalData = setInterval(async () => {
+      const result = await axios.get(
+        "https://jsonplaceholder.typicode.com/posts"
+      );
+
+      console.log(result.data);
+    }, 1000);
+
+    return () => clearInterval(intervalData);
+  }
+
+  useEffect(() => {
+    // handleApi();
+  }, []);
+
+  async function insertData() {
+    // let interval = setInterval(() => {
+    for (let index = 0; index < 1000; index++) {
+      console.log(index + 1);
+    }
+    // }, 1000);
+
+    // clearInterval(interval);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={() => insertData()}>Test api</button>
     </div>
   );
 }
