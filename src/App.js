@@ -1,38 +1,19 @@
-import { useEffect } from "react";
+import { ApolloProvider, InMemoryCache, ApolloClient } from "@apollo/client";
+import Home from "./Home";
 import "./App.css";
-import axios from "axios";
 
 function App() {
-  async function handleApi() {
-    const intervalData = setInterval(async () => {
-      const result = await axios.get(
-        "https://jsonplaceholder.typicode.com/posts"
-      );
-
-      console.log(result.data);
-    }, 1000);
-
-    return () => clearInterval(intervalData);
-  }
-
-  useEffect(() => {
-    // handleApi();
-  }, []);
-
-  async function insertData() {
-    // let interval = setInterval(() => {
-    for (let index = 0; index < 1000; index++) {
-      console.log(index + 1);
-    }
-    // }, 1000);
-
-    // clearInterval(interval);
-  }
+  const httpClient = new ApolloClient({
+    uri: "http://192.168.0.105:4000/graphql",
+    cache: new InMemoryCache(),
+  });
 
   return (
-    <div className="App">
-      <button onClick={() => insertData()}>Test api</button>
-    </div>
+    <ApolloProvider client={httpClient}>
+      <div className="App">
+        <Home />
+      </div>
+    </ApolloProvider>
   );
 }
 
